@@ -1,6 +1,6 @@
 {
   "name": "@uiwwsw/workbox",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Navigation-only service worker fallback for returning visitors during server outages",
   "type": "module",
   "engines": { "node": ">=20" },

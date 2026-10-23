@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify the cross-surface notice and voluntary training-crawler preferences."""
+"""Verify the source/distribution notice and voluntary training-crawler preferences."""
 from pathlib import Path
 import json
 import re
@@ -34,9 +34,15 @@ for filename in config.get('assets', []):
         failures.append(filename + ': full notice asset missing or out of sync')
 for filename in config.get('surfaces', []):
     path = root / filename
-    text = path.read_text() if path.exists() else ''
-    if not any(marker in text for marker in ['data-ai-training-notice', 'AiTrainingNotice', 'AI training notice', 'AI-TRAINING-NOTICE.md']):
-        failures.append(filename + ': visible notice missing')
+    if not path.exists():
+        failures.append(filename + ': configured source missing')
+        continue
+    text = path.read_text()
+    if not filename.lower().endswith('.md') and any(marker in text for marker in [
+        'data-ai-training-notice', 'AiTrainingNotice', 'AI training notice',
+    ]):
+        failures.append(filename + ': product UI must not display the shared AI notice')
+
 robots_sources = '\n'.join((root / filename).read_text() for filename in config.get('robots', []) if (root / filename).exists())
 bots = ['GPTBot', 'ClaudeBot', 'Google-Extended', 'Applebot-Extended', 'CCBot']
 for filename in config.get('robots', []):
@@ -69,6 +75,9 @@ if '--built' in sys.argv:
             continue
         if not (path / 'ai-training-notice.txt').exists():
             failures.append(output + ': built notice missing')
+        for html in path.rglob('*.html'):
+            if 'data-ai-training-notice' in html.read_text():
+                failures.append(str(html.relative_to(root)) + ': built UI contains the shared AI notice')
         parser = RobotFileParser()
         robots = path / 'robots.txt'
         if not robots.exists():

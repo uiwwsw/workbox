@@ -7,5 +7,6 @@
   "packages": [
     "package.json"
   ],
-  "outputs": []
+  "outputs": [],
+  "uiPolicy": "source-only"
 }

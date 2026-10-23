@@ -8,7 +8,7 @@
     ".": { "types": "./src/index.d.ts", "import": "./src/index.js" },
     "./register": { "types": "./src/register.d.ts", "import": "./src/register.js" }
   },
-  "bin": { "outage-worker": "./src/cli.js" },
+  "bin": { "outage-worker": "src/cli.js" },
   "files": ["src", "README.md", "LICENSE", "AI-TRAINING-NOTICE.md"],
   "scripts": { "test": "node --test", "check": "node --test && python3 .github/scripts/check-ai-notice.py", "prepublishOnly": "npm run check" },
   "publishConfig": { "access": "public", "registry": "https://registry.npmjs.org/" },

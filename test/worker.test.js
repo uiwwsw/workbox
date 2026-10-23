@@ -59,6 +59,7 @@ test('fallback on disconnected server and timeout', async () => {
 test('does not intercept API calls, POSTs, or outside scope', async () => {
   const sw = setup({ scope: '/app/', fallback: '/app/unavailable.html' });
   assert.equal(await sw.navigate({ mode: 'cors', pathname: '/api/user' }), undefined);
+  assert.equal(await setup().navigate({ pathname: '/api/user' }), undefined);
   assert.equal(await sw.navigate({ method: 'POST' }), undefined);
   assert.equal(await sw.navigate({ pathname: '/other' }), undefined);
 });

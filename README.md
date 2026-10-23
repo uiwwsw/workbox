@@ -76,6 +76,12 @@ npm test
 npm pack --dry-run
 ```
 
+## Releases
+
+The `Publish npm` GitHub Actions workflow publishes from `main` using npm Trusted Publishing (OIDC). It requires no stored npm publishing token. Configure the package's trusted publisher with the repository owner and name, workflow filename `publish.yml`, and direct publishing permission. The workflow uses no GitHub environment binding.
+
+For a new package, first use npm staged publishing and approve the initial version on npmjs.com. Once the package exists, configure its trusted publisher. Commit a new package version, then manually run the workflow from `main`. The workflow checks the package, inspects its contents and publishes with provenance. Run its first OIDC release within two days of configuring the trust relationship.
+
 ## License
 
 MIT. See [LICENSE](LICENSE).

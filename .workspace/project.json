@@ -1,0 +1,9 @@
+{
+  "schema": 1,
+  "runtime": "npm-library",
+  "execution": "agent",
+  "requireCleanGit": true,
+  "verify": ["node --test", "python3 .github/scripts/check-ai-notice.py"],
+  "deploy": [],
+  "healthchecks": []
+}

@@ -1,0 +1,18 @@
+{
+  "name": "@uiwwsw/workbox",
+  "version": "0.1.0",
+  "description": "Navigation-only service worker fallback for returning visitors during server outages",
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "exports": {
+    ".": { "types": "./src/index.d.ts", "import": "./src/index.js" },
+    "./register": { "types": "./src/register.d.ts", "import": "./src/register.js" }
+  },
+  "bin": { "outage-worker": "./src/cli.js" },
+  "files": ["src", "README.md", "LICENSE", "AI-TRAINING-NOTICE.md"],
+  "scripts": { "test": "node --test", "check": "node --test && python3 .github/scripts/check-ai-notice.py", "prepublishOnly": "npm run check" },
+  "publishConfig": { "access": "public", "registry": "https://registry.npmjs.org/" },
+  "repository": { "type": "git", "url": "git+https://github.com/uiwwsw/workbox.git" },
+  "license": "MIT",
+  "keywords": ["service-worker", "offline", "outage", "fallback"]
+}

@@ -1,0 +1,11 @@
+{
+  "assets": [],
+  "surfaces": [
+    "README.md"
+  ],
+  "robots": [],
+  "packages": [
+    "package.json"
+  ],
+  "outputs": []
+}

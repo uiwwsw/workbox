@@ -1,1 +1,34 @@
-{ "schema": 1, "id": "workbox", "visibility": "private" }
+{
+  "schema": 1,
+  "id": "workbox",
+  "visibility": "public",
+  "name": "Workbox",
+  "en": "Workbox",
+  "category": "개발 도구",
+  "symbol": "W",
+  "color": "#315bd5",
+  "summary": "기존 방문자를 위한 웹 장애 안내 서비스워커.",
+  "description": "서버 연결 실패·시간 초과·HTTP 5xx 때 미리 저장한 정적 안내 화면을 제공하는 서비스워커 패키지입니다. 서비스별 안내 페이지 경로를 설정하고 빌드 시 워커를 생성합니다. Google Workbox와 별개의 프로젝트입니다.",
+  "features": [
+    "연결 실패·시간 초과·HTTP 5xx 안내",
+    "설정한 공개 안내 페이지와 정적 파일만 저장",
+    "API·개인 정보·일반 페이지 캐시 제외",
+    "안내 파일 내용에 따른 캐시 버전 자동 갱신",
+    "기존 서비스워커 충돌 감지와 통합 지원"
+  ],
+  "status": "live",
+  "links": [
+    {
+      "platform": "package",
+      "url": "https://www.npmjs.com/package/@uiwwsw/workbox"
+    },
+    {
+      "platform": "source",
+      "url": "https://github.com/uiwwsw/workbox"
+    }
+  ],
+  "evidence": {
+    "verifiedAt": "2026-10-23",
+    "note": "npm 0.1.0 공개 게시 및 패키지 페이지 확인. 25개 테스트 통과. Chrome에서 HTTP 503·연결 단절·시간 초과·서버 종료 시 캐시 안내 화면과 복구 후 재시도를 검증하고 데스크톱·모바일 레이아웃을 확인했다."
+  }
+}

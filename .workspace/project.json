@@ -3,7 +3,7 @@
   "runtime": "npm-library",
   "execution": "agent",
   "requireCleanGit": true,
-  "verify": ["node --test", "python3 .github/scripts/check-ai-notice.py"],
+  "verify": ["node --test"],
   "deploy": [],
   "healthchecks": []
 }

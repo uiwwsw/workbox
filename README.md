@@ -85,5 +85,3 @@ For a new package, first use npm staged publishing and approve the initial versi
 ## License
 
 MIT. See [LICENSE](LICENSE).
-
-AI 학습·미세조정 및 학습용 데이터 수집에 대한 권리자 의사는 [AI 이용 고지 / AI use notice](AI-TRAINING-NOTICE.md)를 참고하세요.

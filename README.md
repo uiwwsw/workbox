@@ -56,7 +56,7 @@ For static sites without a bundler, copy `src/register.js` from the installed pa
 
 For a subpath deployment, set `scope` and `fallback` to that subpath and pass matching `scope` and `worker` options to registration. Place the worker at or above the scope directory.
 
-The CLI validates that declared public files exist and automatically revisions their cache when their contents change.
+The CLI checks that the declared files exist in `outDir` and includes a hash of their contents in the cache name, so a content change creates a new cache.
 
 The Node API exports `createWorker(options)` and `writeWorker(options)` for build integrations. Browser registration is a separate export, so Node built-ins never enter the client bundle.
 
@@ -66,7 +66,7 @@ The Node API exports `createWorker(options)` and `writeWorker(options)` for buil
 - Only the fallback and explicitly listed public assets are cached. Initial caching omits credentials and rejects redirects and unsuccessful responses. The fallback must be HTML.
 - HTTPS and a successful prior installation are required. First visits, cleared/evicted storage, private browsing restrictions and disabled service workers cannot be protected.
 - Existing pages' API errors and client-side router transitions need application UI handling. This package does not replace that handling or provide attack protection.
-- Registration refuses overlapping existing workers. Integrate with an existing PWA worker rather than replacing it; do not add a second competing worker.
+- Registration refuses overlapping existing workers. If the site already has a service worker in that scope, add the fallback logic to that worker; this package has no API for merging into an existing one.
 - Updates follow the standard waiting lifecycle. No forced `skipWaiting`, mass unregister or deletion of other packages' caches occurs. Close old tabs to finish activating a waiting update.
 - Retry the original URL from the fallback (for example, a normal reload button). Avoid automatic reload loops or redirecting to the fallback URL.
 - Removing registration code does not uninstall an existing worker. Roll back by serving a network-only worker at the same URL and releasing it through the normal update lifecycle before removing that URL.

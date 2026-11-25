@@ -1,20 +1,53 @@
 {
   "name": "@uiwwsw/workbox",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Generates a service worker that shows a pre-cached static HTML page when a navigation fails (network error, timeout or HTTP 5xx). Not affiliated with Google Workbox.",
   "type": "module",
-  "engines": { "node": ">=20" },
-  "exports": {
-    ".": { "types": "./src/index.d.ts", "import": "./src/index.js" },
-    "./register": { "types": "./src/register.d.ts", "import": "./src/register.js" }
+  "engines": {
+    "node": ">=20"
   },
-  "bin": { "outage-worker": "src/cli.js" },
-  "files": ["src", "README.md", "LICENSE"],
-  "scripts": { "test": "node --test", "check": "node --test", "prepublishOnly": "npm run check" },
-  "publishConfig": { "access": "public", "registry": "https://registry.npmjs.org/" },
-  "repository": { "type": "git", "url": "git+https://github.com/uiwwsw/workbox.git" },
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "import": "./src/index.js"
+    },
+    "./register": {
+      "types": "./src/register.d.ts",
+      "import": "./src/register.js"
+    }
+  },
+  "bin": {
+    "outage-worker": "src/cli.js"
+  },
+  "files": [
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node --test",
+    "check": "node --test",
+    "prepublishOnly": "npm run check"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uiwwsw/workbox.git"
+  },
   "homepage": "https://github.com/uiwwsw/workbox#readme",
-  "bugs": { "url": "https://github.com/uiwwsw/workbox/issues" },
+  "bugs": {
+    "url": "https://github.com/uiwwsw/workbox/issues"
+  },
   "license": "MIT",
-  "keywords": ["service-worker", "offline-fallback", "outage", "fallback-page", "cache-storage", "static-html"]
+  "keywords": [
+    "service-worker",
+    "offline-fallback",
+    "outage",
+    "fallback-page",
+    "cache-storage",
+    "static-html"
+  ]
 }

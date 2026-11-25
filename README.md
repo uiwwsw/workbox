@@ -1,18 +1,48 @@
-# @uiwwsw/workbox
+<div align="center">
 
-서버가 응답하지 않을 때 미리 저장해 둔 정적 HTML 안내 페이지를 보여주는 서비스워커를 빌드 시점에 생성하는 npm 패키지입니다. 런타임 의존성은 없습니다.
-An npm package that generates, at build time, a service worker which shows a pre-cached static HTML page when a page navigation fails (network error, timeout or HTTP 5xx). No runtime dependencies.
+<h1>@uiwwsw/workbox</h1>
+
+<p>서버가 응답하지 않을 때 미리 저장해 둔 정적 HTML 안내 페이지를 보여주는 서비스워커를 빌드 시점에 생성합니다.<br>
+Generates, at build time, a service worker that shows a pre-cached static HTML page when a page navigation fails.</p>
+
+<p>
+<a href="https://www.npmjs.com/package/@uiwwsw/workbox"><img alt="npm version" src="https://img.shields.io/npm/v/@uiwwsw/workbox?style=flat-square"></a>
+<a href="LICENSE"><img alt="license" src="https://img.shields.io/npm/l/@uiwwsw/workbox?style=flat-square"></a>
+<a href="https://github.com/uiwwsw/workbox/actions/workflows/test.yml"><img alt="CI" src="https://img.shields.io/github/actions/workflow/status/uiwwsw/workbox/test.yml?branch=main&style=flat-square"></a>
+<img alt="node" src="https://img.shields.io/node/v/@uiwwsw/workbox?style=flat-square">
+<img alt="dependencies: 0" src="https://img.shields.io/badge/dependencies-0-brightgreen?style=flat-square">
+<img alt="not affiliated with Google Workbox" src="https://img.shields.io/badge/not%20affiliated%20with-Google%20Workbox-lightgrey?style=flat-square">
+</p>
+
+<p>
+<a href="https://www.npmjs.com/package/@uiwwsw/workbox">npm</a> ·
+<a href="#구성--architecture">Architecture</a> ·
+<a href="https://github.com/uiwwsw/workbox/issues">Issues</a>
+</p>
+
+</div>
 
 **Google Workbox(`workbox-*` 패키지)와는 관계가 없습니다.** 이름이 같을 뿐 Google이 만들거나 보증한 프로젝트가 아니며 코드도 공유하지 않습니다. 이미 Google Workbox를 쓰고 있다면 [`offlineFallback` 레시피](https://developer.chrome.com/docs/workbox/modules/workbox-recipes#offline_fallback)를 쓰는 편이 낫습니다. 자세한 비교는 아래 [구성 / Architecture](#구성--architecture)를 보세요.
 **This package is not related to Google Workbox (the `workbox-*` packages).** It only shares the name; it is not made or endorsed by Google and shares no code. If you already use Google Workbox, use its [`offlineFallback` recipe](https://developer.chrome.com/docs/workbox/modules/workbox-recipes#offline_fallback) instead. See [구성 / Architecture](#구성--architecture) below for the comparison.
 
-It does not cache application pages, API responses, credentials, or personal data. Only the fallback page and the assets you list are stored.
+## 제공하는 것 / What it provides
+
+- `outage-worker` 명령: JSON 설정 파일 하나로 서비스워커 파일을 `outDir`에 씁니다. / `outage-worker` CLI: writes the service worker file to `outDir` from one JSON config file.
+- `createWorker(options)`, `writeWorker(options)`: 빌드 스크립트에서 쓰는 Node API입니다. / Node API for build scripts.
+- `registerOutageWorker()`: 브라우저에서 워커를 등록합니다. 다른 서비스워커와 범위가 겹치면 등록하지 않고 오류를 던집니다. / Registers the worker in the browser; throws if another worker with an overlapping scope exists.
+- 폴백 조건: 네트워크 오류, 타임아웃(`timeoutMs`, 기본 8000ms), HTTP 5xx. / Fallback triggers: network error, timeout (`timeoutMs`, default 8000 ms), HTTP 5xx.
+- 캐시 대상: 폴백 HTML과 `assets`에 적은 공개 파일뿐입니다. / Cached: the fallback HTML and the public files listed in `assets` only.
+- 폴백 페이지와 에셋 내용의 해시가 캐시 이름에 들어가, 내용이 바뀌면 새 캐시가 생깁니다. / A hash of the fallback page and assets is part of the cache name, so a content change creates a new cache.
+- 401, 403, 404, 429 응답과 `/api` 경로는 그대로 통과시킵니다. / 401, 403, 404, 429 responses and `/api` paths pass through untouched.
+- 런타임 의존성 0개, TypeScript 선언 파일 포함. / Zero runtime dependencies; TypeScript declarations included.
 
 ## Install
 
 ```sh
 npm install @uiwwsw/workbox
 ```
+
+Requires Node.js 20 or newer.
 
 Create a public, self-contained static HTML page at `public/unavailable.html`. Use inline CSS or declare its public dependencies in `assets`. Avoid remote fonts, scripts and authenticated resources: they may be unreachable during an outage.
 
@@ -40,6 +70,25 @@ registerOutageWorker().catch(console.error);
 ```
 
 For static sites without a bundler, copy `src/register.js` from the installed package into the site's static assets and import it locally. Serve the generated worker from the same origin as the site, with a JavaScript content type and `Cache-Control: no-cache`. Exclude the worker from SPA HTML rewrites. Keep registration failures observable without blocking application startup.
+
+## 제공하지 않는 것 / Not included
+
+- 애플리케이션 페이지, API 응답, 자격 증명, 개인 데이터를 캐시하지 않습니다. / No caching of application pages, API responses, credentials or personal data.
+- 성공적으로 불러온 페이지를 오프라인용으로 저장하지 않습니다. / Pages that loaded successfully are not stored for offline use.
+- 이미 있는 서비스워커에 합치는 API가 없습니다. / No API for merging into an existing service worker.
+- 페이지 안의 API 오류와 클라이언트 라우터 전환 처리는 하지 않습니다. / No handling of API errors inside loaded pages or client-side router transitions.
+- 공격 방어 기능은 없습니다. / No attack protection.
+- 첫 방문, 비워지거나 제거된 저장소, 서비스워커가 꺼진 환경은 보호하지 못합니다. HTTPS가 필요합니다. / Does not cover first visits, cleared or evicted storage, or disabled service workers; HTTPS is required.
+- 강제 `skipWaiting`, 일괄 등록 해제, 다른 패키지 캐시 삭제를 하지 않습니다. / No forced `skipWaiting`, mass unregister, or deletion of other packages' caches.
+- Google Workbox의 API(`registerRoute`, 전략, 프리캐싱)는 없습니다. / None of Google Workbox's API (`registerRoute`, strategies, precaching).
+
+## 기반 / Built on
+
+- [Service Worker API](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API) ([specification](https://w3c.github.io/ServiceWorker/))
+- [Cache Storage API](https://developer.mozilla.org/en-US/docs/Web/API/CacheStorage)
+- [Service worker lifecycle](https://web.dev/articles/service-worker-lifecycle) (update behavior)
+- [Offline Cookbook](https://web.dev/articles/offline-cookbook) (serve a stored page when the network fails)
+- Alternative: Google Workbox [`offlineFallback` recipe](https://developer.chrome.com/docs/workbox/modules/workbox-recipes#offline_fallback)
 
 ## Options
 

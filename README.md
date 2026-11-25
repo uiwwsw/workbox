@@ -1,8 +1,12 @@
 # @uiwwsw/workbox
 
-기존 방문자에게 서버 장애 시 미리 저장한 안내 페이지를 보여주는 작은 서비스워커 패키지입니다. Google Workbox와 별개의 프로젝트입니다.
+서버가 응답하지 않을 때 미리 저장해 둔 정적 HTML 안내 페이지를 보여주는 서비스워커를 빌드 시점에 생성하는 npm 패키지입니다. 런타임 의존성은 없습니다.
+An npm package that generates, at build time, a service worker which shows a pre-cached static HTML page when a page navigation fails (network error, timeout or HTTP 5xx). No runtime dependencies.
 
-A navigation-only outage fallback for returning visitors. It does not cache application pages, API responses, credentials, or personal data.
+**Google Workbox(`workbox-*` 패키지)와는 관계가 없습니다.** 이름이 같을 뿐 Google이 만들거나 보증한 프로젝트가 아니며 코드도 공유하지 않습니다. 이미 Google Workbox를 쓰고 있다면 [`offlineFallback` 레시피](https://developer.chrome.com/docs/workbox/modules/workbox-recipes#offline_fallback)를 쓰는 편이 낫습니다. 자세한 비교는 아래 [구성 / Architecture](#구성--architecture)를 보세요.
+**This package is not related to Google Workbox (the `workbox-*` packages).** It only shares the name; it is not made or endorsed by Google and shares no code. If you already use Google Workbox, use its [`offlineFallback` recipe](https://developer.chrome.com/docs/workbox/modules/workbox-recipes#offline_fallback) instead. See [구성 / Architecture](#구성--architecture) below for the comparison.
+
+It does not cache application pages, API responses, credentials, or personal data. Only the fallback page and the assets you list are stored.
 
 ## Install
 

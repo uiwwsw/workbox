@@ -28,6 +28,14 @@ Generates, at build time, a service worker that shows a pre-cached HTML page whe
 서버가 5xx를 반환하거나 응답하지 않을 때, 이전에 방문한 사용자에게 미리 저장한 HTML 페이지를 보여주는 서비스워커를 만듭니다. 번들러와 의존성 없이 JSON 설정 파일 하나로 동작합니다.
 It generates a service worker that serves a pre-cached HTML page to returning visitors when the server fails or does not respond. It needs no bundler and no dependencies, only one JSON config file.
 
+## 장점 / Why use it
+
+- **의존성 0개, 번들러 불필요.** JSON 설정 파일 하나와 `outage-worker` 명령으로 서비스워커를 만듭니다. / Zero runtime dependencies and no bundler: one JSON config and the `outage-worker` command.
+- **서버 장애까지 잡습니다.** 네트워크 오류뿐 아니라 타임아웃(기본 8초)과 HTTP 5xx 응답에도 안내 페이지를 보여 줍니다. / Covers server failures too: network errors, timeouts (8 s by default) and HTTP 5xx responses all show the outage page.
+- **필요한 것만 저장합니다.** 안내 HTML과 지정한 정적 파일만 캐시하고, 앱 페이지·API 응답·쿠키·로그인한 화면은 저장하지 않습니다. 401·403·404·429와 `/api` 경로는 그대로 통과시킵니다. / Caches only the outage page and the files you list; never app pages, API responses, cookies or signed-in content. 401, 403, 404, 429 and `/api` pass through.
+- **기존 서비스워커를 망가뜨리지 않습니다.** 같은 범위에 다른 워커가 있으면 등록하지 않고, `skipWaiting`을 강제하지 않으며, 다른 패키지의 캐시를 지우지 않습니다. / Safe next to existing workers: it refuses to register over another worker's scope, never forces `skipWaiting`, and leaves other caches alone.
+- **안내 페이지를 고치면 자동으로 갱신됩니다.** 내용 해시가 캐시 이름에 들어가 새 버전이 새 캐시로 설치됩니다. / Editing the outage page updates it: a content hash in the cache name installs a fresh cache.
+
 ## 지금 되는 것 / What works now
 
 - `outage-worker` CLI가 JSON 설정으로 서비스워커 파일을 씁니다. / The `outage-worker` CLI writes the worker file from a JSON config.
@@ -47,14 +55,6 @@ It generates a service worker that serves a pre-cached HTML page to returning vi
 - 페이지 안의 API 오류와 클라이언트 라우터 전환을 처리하지 않습니다. / No handling of API errors inside loaded pages or client-side router transitions.
 - 라우팅, 캐싱 전략, 프리캐싱 API가 없습니다. / No routing, caching strategies or precaching API.
 - 공격 방어가 없습니다. / No attack protection.
-
-## 현재 위치 / Where it stands
-
-- npm 주간 다운로드는 16회입니다. 같은 기간 `workbox-recipes` 11,653,542회, `workbox-window` 12,504,327회, `serwist` 1,042,063회, `@serwist/next` 604,275회입니다. / Weekly npm downloads: 16. Same week: `workbox-recipes` 11,653,542, `workbox-window` 12,504,327, `serwist` 1,042,063, `@serwist/next` 604,275.
-- 패키지 이름이 Google Workbox와 겹쳐 검색과 문서에서 혼동됩니다. / The name collides with Google Workbox, so searches and docs can point to either.
-- Google Workbox의 [`offlineFallback`](https://developer.chrome.com/docs/workbox/modules/workbox-recipes#offline_fallback)이 같은 용도를 이미 제공합니다. Workbox 포크인 [Serwist](https://github.com/serwist/serwist)도 `PrecacheFallbackPlugin`을 제공합니다. / Google Workbox's `offlineFallback` already covers this use. Serwist, a Workbox fork, ships `PrecacheFallbackPlugin`.
-- 작성자 사이트(movvcorp)에서 사용합니다. 외부 사용 사례는 확인된 것이 없습니다. / Used by the author's own site (movvcorp). No external use is known.
-- 맞는 경우: 번들러와 Workbox가 없고 장애 안내 페이지만 필요한 사이트. 그 밖에는 위 대안을 쓰는 편이 낫습니다. / It fits a site with no bundler and no Workbox that only needs an outage page. Otherwise use the alternatives above.
 
 ## 설치 / Install
 

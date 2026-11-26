@@ -1,6 +1,6 @@
 {
   "name": "@uiwwsw/workbox",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Generates a service worker that shows a pre-cached static HTML page when a navigation fails (network error, timeout or HTTP 5xx). Not affiliated with Google Workbox.",
   "type": "module",
   "engines": {
